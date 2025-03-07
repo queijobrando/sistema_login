@@ -6,7 +6,8 @@
     </head>
     <body class="">
         
-        <form action="/adicionartarefa" method="POST" class="">
+        <form action="{{ url_for('tarefas.adicionartarefas') }}" method="POST">
+
 
             <label for="descricao" class="">Descrição da Tarefa:</label>
             <input type="text" name="descricaoForm" id="descricao" class=""><br>

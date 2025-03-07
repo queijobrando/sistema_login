@@ -10,6 +10,9 @@
         {% if tarefas %}
             {% for tarefa in tarefas %}
                 <li>{{ tarefa.descricao }}</li>
+                <form action="{{ url_for('tarefas.excluir_tarefa', id_tarefa=tarefa.id) }}" method="POST" style="display:inline;">
+                    <button type="submit">Excluir</button>
+                </form>
             {% endfor %}
         {% else %}
             <p>Nenhuma tarefa cadastrada.</p>

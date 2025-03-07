@@ -2,8 +2,10 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from db import db
 from models import Usuario, Tarefa
+from tarefas.tarefas import tarefas_bp #blueprint
 
 app = Flask(__name__)
+app.register_blueprint(tarefas_bp, url_prefix='/tarefas') #registra o blueprint
 app.secret_key = 'lancode'
 lm = LoginManager(app)
 lm.login_view = 'login' #redireciona para a pagina login se o login não for feito (não deixa entrar na home)
@@ -63,25 +65,8 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-#LISTA TAREFAS
-@app.route('/tarefas', methods=['GET'])
-@login_required
-def tarefas():
-    tarefas_usuario = Tarefa.query.filter_by(id_usuario=current_user.id).all()
-    return render_template('tarefas.html', tarefas=tarefas_usuario)
-    
-@app.route('/adicionartarefa', methods=['POST', 'GET'])
-def adicionartarefas():
-    if request.method == 'GET':
-        return render_template('adicionartarefa.html')
-    elif request.method == 'POST':
-        descricao = request.form['descricaoForm']
 
-        nova_tarefa = Tarefa(descricao=descricao, id_usuario=current_user.id)
-        db.session.add(nova_tarefa) #adiciona ao banco de dados
-        db.session.commit()
 
-        return redirect(url_for('tarefas'))
 
 if __name__ == '__main__':
     with app.app_context():
