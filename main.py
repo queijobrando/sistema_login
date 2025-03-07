@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from db import db
-from models import Usuario
+from models import Usuario, Tarefa
 
 app = Flask(__name__)
 app.secret_key = 'lancode'
@@ -10,7 +10,7 @@ lm.login_view = 'login' #redireciona para a pagina login se o login não for fei
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 db.init_app(app)
 
-#LOGIN ID
+###LOGIN ID
 @lm.user_loader
 def user_loader(id):
     usuario = db.session.query(Usuario).filter_by(id=id).first() #puxa do db da tabela Usuario onde o id seja igual
@@ -63,7 +63,25 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+#LISTA TAREFAS
+@app.route('/tarefas', methods=['GET'])
+@login_required
+def tarefas():
+    tarefas_usuario = Tarefa.query.filter_by(id_usuario=current_user.id).all()
+    return render_template('tarefas.html', tarefas=tarefas_usuario)
+    
+@app.route('/adicionartarefa', methods=['POST', 'GET'])
+def adicionartarefas():
+    if request.method == 'GET':
+        return render_template('adicionartarefa.html')
+    elif request.method == 'POST':
+        descricao = request.form['descricaoForm']
 
+        nova_tarefa = Tarefa(descricao=descricao, id_usuario=current_user.id)
+        db.session.add(nova_tarefa) #adiciona ao banco de dados
+        db.session.commit()
+
+        return redirect(url_for('tarefas'))
 
 if __name__ == '__main__':
     with app.app_context():
