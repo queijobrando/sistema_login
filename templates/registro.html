@@ -1,18 +1,21 @@
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/formularios.css')}}">
     </head>
-    <body>
+    <body class="login-container">
         
-        <form action="/registro" method="POST">
-            Nome: <input type="text" name="nomeForm"><br>
-            Senha: <input type="password" name="senhaForm"><br>
-            <input type="submit" value="Cadastrar">
-        </form>
+        <form action="/registro" method="POST" class="login-form">
+            <label for="nome" class="login-label">Nome:</label>
+            <input type="text" name="nomeForm" id="nome" class="login-input"><br>
 
+            <label for="senha" class="login-label">Senha:</label>
+            <input type="password" name="senhaForm" id="senha" class="login-input"><br>
+
+            <input type="submit" value="Registrar" class="login-button">
+        </form>
 
     </body>
 </html>

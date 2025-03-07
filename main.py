@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from db import db
 from models import Usuario
@@ -19,7 +19,6 @@ def user_loader(id):
 #HOME
 @app.route('/')
 def home():
-    print(current_user.nome)
     return render_template('index.html')
 
 #REGISTRO USUARIO
@@ -50,7 +49,9 @@ def login():
 
         user = db.session.query(Usuario).filter_by(nome=nome, senha=senha).first()
         if not user:
-            return 'Nome ou senha incorretos'
+            flash('Nome ou senha incorretos', 'error')
+            return redirect(url_for('login'))
+
         
         login_user(user) #logando o usuario
         return redirect(url_for('home'))

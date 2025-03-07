@@ -1,18 +1,32 @@
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/formularios.css')}}">
     </head>
-    <body>
+    <body class="login-container">
         
-        <form action="/login" method="POST">
-            Nome: <input type="text" name="nomeForm"><br>
-            Senha: <input type="password" name="senhaForm"><br>
-            <input type="submit" value="Logar">
-        </form>
+        <form action="/login" method="POST" class="login-form">
 
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div>
+                        {% for msg in messages %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                {% endif %} 
+            {% endwith %}
+
+            <label for="nome" class="login-label">Nome:</label>
+            <input type="text" name="nomeForm" id="nome" class="login-input"><br>
+
+            <label for="senha" class="login-label">Senha:</label>
+            <input type="password" name="senhaForm" id="senha" class="login-input"><br>
+
+            <input type="submit" value="Logar" class="login-button">
+        </form>
 
     </body>
 </html>

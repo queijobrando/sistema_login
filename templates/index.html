@@ -3,13 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/paginainicial.css')}}">
 </head>
-<body>
+<body class="homepage-container">
+
     {% if current_user.is_authenticated %}
+        <nav class="navbar">
+            <div class="navbar-logo">Meu Site</div>
+            <div class="navbar-buttons">
+                <a href="/logout" class="navbar-button">Logout</a>
+            </div>
+        </nav>
         <h1>Você está logado <br> Olá, {{current_user.nome}}</h1>
     {% else %}
+        <nav class="navbar">
+            <div class="navbar-logo">Meu Site</div>
+            <div class="navbar-buttons">
+                <a href="/login" class="navbar-button">Login</a>
+                <a href="/registro" class="navbar-button">Registrar</a>
+            </div>
+        </nav>
         <h1>Você não está logado</h1>
     {% endif %}
+
 </body>
 </html>
